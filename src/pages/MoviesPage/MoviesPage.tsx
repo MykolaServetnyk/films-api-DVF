@@ -4,20 +4,26 @@ import MovieList from '../../components/MovieList/MovieList';
 import toast, { Toaster } from 'react-hot-toast';
 import css from './MoviesPage.module.css';
 
+type Movie = {
+  id: number;
+  original_title: string;
+};
+
 export default function MoviesPage() {
     const [searchQuery, setSearchQuery] = useState('');
-    const [movies, setMovies] = useState([]);
+    const [movies, setMovies] = useState<Movie[]>([]);
     const [loading, setLoading] = useState(false);
 
-    const handleSearch = async (e) => {
+    const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
         try {
-            const searchedMovies = await getMovieByTitle(searchQuery);
             if (searchQuery === '') {
                 toast.error("Please, enter your request!");
+            } else {
+                const searchedMovies: Movie[] = await getMovieByTitle(searchQuery);
+                setMovies(searchedMovies);
             }
-            setMovies(searchedMovies);
         } catch (error) {
             console.error("Error fetching movies:", error);
         } finally {

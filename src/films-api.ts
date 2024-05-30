@@ -28,37 +28,58 @@ type Review = {
 const options = {
     headers: {
         Authorization: `Bearer ${TOKEN_API}`
-    },
-    language: 'en-US',
-    include_adult: false
+    }
 };
 
 export const getTrendingMovies = async (): Promise<Movie[]> => {
-    const response: AxiosResponse<Movie[]> = await axios.get(`${base_url}/trending/movie/day`, options);
+    const response: AxiosResponse<{ results: Movie[] }> = await axios.get(`${base_url}/trending/movie/day`, {
+        ...options,
+        params: {
+            language: 'en-US',
+            include_adult: false
+        }
+    });
     return response.data.results;
 }
 
 export const getMovieByTitle = async (query: string): Promise<Movie[]> => {
-    const response: AxiosResponse<Movie[]> = await axios.get(`${base_url}/search/movie`, {
+    const response: AxiosResponse<{ results: Movie[] }> = await axios.get(`${base_url}/search/movie`, {
         ...options,
         params: {
-            query: query
+            query: query,
+            language: 'en-US',
+            include_adult: false
         }
     });
     return response.data.results;
 }
 
 export const getMovieById = async (movieId: number): Promise<Movie> => {
-    const response: AxiosResponse<Movie> = await axios.get(`${base_url}/movie/${movieId}`, options);
+    const response: AxiosResponse<Movie> = await axios.get(`${base_url}/movie/${movieId}`, {
+        ...options,
+        params: {
+            language: 'en-US'
+        }
+    });
     return response.data;
 }
 
 export const getMoviesCast = async (movieId: number): Promise<Cast[]> => {
-    const response: AxiosResponse<{ cast: Cast[] }> = await axios.get(`${base_url}/movie/${movieId}/credits`, options);
+    const response: AxiosResponse<{ cast: Cast[] }> = await axios.get(`${base_url}/movie/${movieId}/credits`, {
+        ...options,
+        params: {
+            language: 'en-US'
+        }
+    });
     return response.data.cast;
 }
 
 export const getMoviesReviews = async (movieId: number): Promise<Review[]> => {
-    const response: AxiosResponse<{ results: Review[] }> = await axios.get(`${base_url}/movie/${movieId}/reviews`, options);
+    const response: AxiosResponse<{ results: Review[] }> = await axios.get(`${base_url}/movie/${movieId}/reviews`, {
+        ...options,
+        params: {
+            language: 'en-US'
+        }
+    });
     return response.data.results;
 }

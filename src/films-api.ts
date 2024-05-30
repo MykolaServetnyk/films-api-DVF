@@ -25,6 +25,18 @@ type Review = {
   // Додайте інші властивості за потреби
 };
 
+type MovieResponse = {
+  results: Movie[];
+};
+
+type CastResponse = {
+  cast: Cast[];
+};
+
+type ReviewResponse = {
+  results: Review[];
+};
+
 const options = {
     headers: {
         Authorization: `Bearer ${TOKEN_API}`
@@ -32,7 +44,7 @@ const options = {
 };
 
 export const getTrendingMovies = async (): Promise<Movie[]> => {
-    const response: AxiosResponse<{ results: Movie[] }> = await axios.get(`${base_url}/trending/movie/day`, {
+    const response: AxiosResponse<MovieResponse> = await axios.get(`${base_url}/trending/movie/day`, {
         ...options,
         params: {
             language: 'en-US',
@@ -43,7 +55,7 @@ export const getTrendingMovies = async (): Promise<Movie[]> => {
 }
 
 export const getMovieByTitle = async (query: string): Promise<Movie[]> => {
-    const response: AxiosResponse<{ results: Movie[] }> = await axios.get(`${base_url}/search/movie`, {
+    const response: AxiosResponse<MovieResponse> = await axios.get(`${base_url}/search/movie`, {
         ...options,
         params: {
             query: query,
@@ -65,7 +77,7 @@ export const getMovieById = async (movieId: number): Promise<Movie> => {
 }
 
 export const getMoviesCast = async (movieId: number): Promise<Cast[]> => {
-    const response: AxiosResponse<{ cast: Cast[] }> = await axios.get(`${base_url}/movie/${movieId}/credits`, {
+    const response: AxiosResponse<CastResponse> = await axios.get(`${base_url}/movie/${movieId}/credits`, {
         ...options,
         params: {
             language: 'en-US'
@@ -75,7 +87,7 @@ export const getMoviesCast = async (movieId: number): Promise<Cast[]> => {
 }
 
 export const getMoviesReviews = async (movieId: number): Promise<Review[]> => {
-    const response: AxiosResponse<{ results: Review[] }> = await axios.get(`${base_url}/movie/${movieId}/reviews`, {
+    const response: AxiosResponse<ReviewResponse> = await axios.get(`${base_url}/movie/${movieId}/reviews`, {
         ...options,
         params: {
             language: 'en-US'
